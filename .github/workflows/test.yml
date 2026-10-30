@@ -49,6 +49,7 @@ jobs:
           cd TVBoxOSC
           git checkout ${{ env.commit }}
           echo "tag=$(git log --date=format:'%Y%m%d-%H%M' --pretty=format:%cd ${{ env.commitS }} -1)" >> $GITHUB_ENV
+          echo "formatted_tag=$(echo ${{ env.tag }} | tr '-' '_')" >> $GITHUB_ENV
       - name: Extra Modify
         if: ${{ env.commit }}
         working-directory: TVBoxOSC
@@ -133,7 +134,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ env.commit }}
         with:
-          name: ${{ matrix.userName }}-${{ matrix.repoName }}
+          name: STVBox_${{ env.formatted_tag }}
           path: |
             TVBoxOSC/apk/*
       - name: Whether Or Not to Publish
