@@ -118,7 +118,7 @@ jobs:
           rm -rf apk/
           mkdir -p apk/
           for file in `find ~ -name "*release*.apk" -print`; do
-            new_base="STVBox_${{ env.formatted_tag }}_armeabi-v7a-generic-java.apk"
+            new_base="STVBox_${{ env.formatted_tag }}_armeabi-v7a-java32.apk"
             # 移动并重命名文件
             mv "$file" "apk/$new_base"
           done
