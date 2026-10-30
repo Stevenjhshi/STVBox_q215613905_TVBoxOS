@@ -1,3 +1,6 @@
+permissions:
+  contents: write
+  
 name: Test
 
 on:
@@ -136,6 +139,14 @@ jobs:
           name: STVBox_${{ env.formatted_tag }}
           path: |
             TVBoxOSC/apk/*
+      - name: Create Release
+        if: ${{ env.commit }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: STVBox_${{ env.formatted_tag }}
+          name: STVBox_${{ env.formatted_tag }}
+          files: |
+            TVBoxOSC/apk/*.apk
       - name: Whether Or Not to Publish
         if: ${{ inputs.donotpublish && env.commit }}
         run: |
