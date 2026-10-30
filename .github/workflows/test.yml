@@ -48,9 +48,9 @@ jobs:
       - name: Checkout Source Code
         if: ${{ env.commit }}
         run: |
-          git clone ${{ env.upStream }} TVBoxOSC
+          mkdir -p TVBoxOSC
+          cp -a $(ls -A | grep -v '^TVBoxOSC$') TVBoxOSC/
           cd TVBoxOSC
-          git checkout ${{ env.commit }}
           echo "tag=$(TZ='Asia/Shanghai' date +'%Y%m%d-%H%M')" >> $GITHUB_ENV
           echo "formatted_tag=$(TZ='Asia/Shanghai' date +'%Y%m%d_%H%M')" >> $GITHUB_ENV
       - name: Extra Modify
