@@ -51,8 +51,8 @@ jobs:
           git clone ${{ env.upStream }} TVBoxOSC
           cd TVBoxOSC
           git checkout ${{ env.commit }}
-          echo "tag=$(git log --date=format:'%Y%m%d-%H%M' --pretty=format:%cd ${{ env.commitS }} -1)" >> $GITHUB_ENV
-          echo "formatted_tag=$(echo ${{ env.tag }} | tr '-' '_')" >> $GITHUB_ENV
+          echo "tag=$(TZ='Asia/Shanghai' date +'%Y%m%d-%H%M')" >> $GITHUB_ENV
+          echo "formatted_tag=$(TZ='Asia/Shanghai' date +'%Y%m%d_%H%M')" >> $GITHUB_ENV
       - name: Extra Modify
         if: ${{ env.commit }}
         working-directory: TVBoxOSC
@@ -118,8 +118,7 @@ jobs:
           rm -rf apk/
           mkdir -p apk/
           for file in `find ~ -name "*release*.apk" -print`; do
-            formatted_tag=$(echo "${{ env.tag }}" | tr '-' '_')
-            new_base="STVBox_${formatted_tag}_armeabi-v7a-generic-java.apk"
+            new_base="STVBox_${{ env.formatted_tag }}_armeabi-v7a-generic-java.apk"
             # 移动并重命名文件
             mv "$file" "apk/$new_base"
           done
