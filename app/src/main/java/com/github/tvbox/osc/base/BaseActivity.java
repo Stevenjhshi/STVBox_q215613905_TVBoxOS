@@ -274,24 +274,42 @@ public abstract class BaseActivity extends AppCompatActivity implements CustomAd
         return !(screenRatio >= 4.0f);
     }
 
-    protected static android.graphics.drawable.Drawable globalWp = null;
+    protected static BitmapDrawable globalWp = null;
 
     public void changeWallpaper(boolean force) {
         if (!force && globalWp != null)
             getWindow().setBackgroundDrawable(globalWp);
-                
-        int[] colors = {0xFF212121, 0xFF0F1B2A, 0xFF1A2B1E, 0xFF2E1417, 0xFF221A26, 0xFF241C17};
-        int[] images = {R.drawable.wp_img_1, R.drawable.wp_img_2, R.drawable.wp_img_3, R.drawable.wp_img_4, R.drawable.wp_img_5};
-        
-        java.util.Random random = new java.util.Random();
-        int choice = random.nextInt(colors.length + images.length);
-        
-        if (choice < colors.length) {
-            globalWp = new android.graphics.drawable.ColorDrawable(colors[choice]);
-        } else {
-            globalWp = getResources().getDrawable(images[choice - colors.length]);
+        try {
+            File wp = new File(getFilesDir().getAbsolutePath() + "/wp");
+            if (wp.exists()) {
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(wp.getAbsolutePath(), opts);
+                // 从Options中获取图片的分辨率
+                int imageHeight = opts.outHeight;
+                int imageWidth = opts.outWidth;
+                int picHeight = 720;
+                int picWidth = 1080;
+                int scaleX = imageWidth / picWidth;
+                int scaleY = imageHeight / picHeight;
+                int scale = 1;
+                if (scaleX > scaleY && scaleY >= 1) {
+                    scale = scaleX;
+                }
+                if (scaleX < scaleY && scaleX >= 1) {
+                    scale = scaleY;
+                }
+                opts.inJustDecodeBounds = false;
+                // 采样率
+                opts.inSampleSize = scale;
+                globalWp = new BitmapDrawable(BitmapFactory.decodeFile(wp.getAbsolutePath(), opts));
+            } else {
+                globalWp = null;
+            }
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            globalWp = null;
         }
-        
         if (globalWp != null)
             getWindow().setBackgroundDrawable(globalWp);
         else
