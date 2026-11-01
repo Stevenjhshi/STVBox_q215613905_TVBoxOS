@@ -101,7 +101,7 @@ jobs:
           rm -rf apk/
           mkdir -p apk/
           for file in `find ~ -name "*release*.apk" -print`; do
-            new_base="STVBox_${{ env.formatted_tag }}_armeabi-v7a-java32.apk"
+            new_base="STVBox_WHT_${{ env.formatted_tag }}_armeabi-v7a-java32.apk"
             # 移动并重命名文件
             mv "$file" "apk/$new_base"
           done
@@ -118,15 +118,15 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ env.commit }}
         with:
-          name: STVBox_${{ env.formatted_tag }}
+          name: STVBox_WHT_${{ env.formatted_tag }}
           path: |
             TVBoxOSC/apk/*
       - name: Create Release
         if: ${{ env.commit }}
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: STVBox_${{ env.formatted_tag }}
-          name: STVBox_${{ env.formatted_tag }}
+          tag_name: STVBox_WHT_${{ env.formatted_tag }}
+          name: STVBox_WHT_${{ env.formatted_tag }}
           files: |
             TVBoxOSC/apk/*.apk
             
