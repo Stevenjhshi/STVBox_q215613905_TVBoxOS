@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def buildTime() {
+    return new Date().format("yyyyMMdd_HHmm", TimeZone.getTimeZone("GMT+08:00"))
+}
+
 android {
     compileSdkVersion 33
 
@@ -9,6 +13,7 @@ android {
         versionCode 1
         versionName '1.0.0'
         multiDexEnabled true
+        resValue "string", "about_version_name", "STVBox_WHT_" + buildTime()
 
         //设置room的Schema的位置
         javaCompileOptions {
